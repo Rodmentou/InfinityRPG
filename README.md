@@ -1,2 +1,2 @@
 # InfinityRPG
-Express Router CRUD API por learning purposes.
+Single player RPG with NODE API for learning purposes.
