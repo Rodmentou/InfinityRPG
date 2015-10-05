@@ -1,2 +1,19 @@
 <div>Game page {{nada}}</div>
-<div ng-repeat='user in users'>{{user.username}}</div>
+<div class='form' style='width: 400px' ng-repeat='user in users'>
+	<b>{{user.username}}</b>
+	<table class='table'>
+		<td>HP:{{user.hp}}/{{user.maxHp}}</td>
+		<td>Atk: {{user.atk}} </td>
+		<td>Def: {{user.def}} </td>
+		<td><button ng-click='attack(user)' class="btn glyphicon glyphicon-screenshot">Attack</button></td>
+
+	</table>
+	<div class="progress">
+  		<div class="progress-bar progress-bar-striped" role="progressbar" ng-class='getBarClass(user)' ng-style="{width: getHpBar(user)}">
+  		</div>
+	</div>
+
+
+</div>
+
+<button class='btn btn-info' ng-click='logout()'> Logout</button>

@@ -2,15 +2,50 @@ var app = angular.module('infinityRPG', ['ngRoute', 'ngCookies']);
 
 app.controller('GameController', function ($scope, $http, $cookies) {
 	var cookieToken = $cookies.get('token');
-	$scope.nada = '´Hello, damm wordl!';
+	$scope.nada = cookieToken;
+
+	$scope.logout = function () {
+		$cookies.remove('token');
+
+	};
+
+	$scope.getHpBar = function (user) {
+		var percentage = user.hp/user.maxHp + '00%';
+		return percentage;
+	};
+
+	$scope.attack = function (user) {
+		$http.post('http://localhost:8080/api/1x1', 
+			{ headers: {'x-acess-token' : cookieToken } })
+			.then ( function (res) {
+
+			}, function (res) {
+
+			});
+	};
+
+	
+
+	$scope.getBarClass = function (user) {
+		if (user.hp/user.maxHp > 0.6) {
+			return 'progress-bar-info';
+		} else if (user.hp/user.maxHp > 0.3) {
+			return 'progress-bar-warning';
+		} else {
+			return 'progress-bar-danger';
+		}
+	};
+
 
 	$http.get('http://localhost:8080/api/users',
 		{ headers: {'x-access-token' : cookieToken } })
 		.then( function (res) {
 			$scope.users = res.data;
 		}, function (res) {
-
 	});
+
+
+
 });
 
 app.controller('LoginController', function ($scope, $http, $location, $cookies) {
@@ -22,9 +57,9 @@ app.controller('LoginController', function ($scope, $http, $location, $cookies) 
 
 
 	$scope.signup = function (user) {
-		$http.post('http://localhost:8080/signup', user)
+		$http.post('http://localhost:8080/api/signup', user)
 			.then( function (res) {
-				console.log(res.data);
+				$scope.auth(user);
 			}, function (res) {
 
 			});
@@ -35,8 +70,6 @@ app.controller('LoginController', function ($scope, $http, $location, $cookies) 
 			.then ( function (res) {
 				$cookies.put('token', res.data.token);
 				$location.path('/play');
-				$rootScope.token = res.data.token;
-				console.log(res.data);
 			}, function (res) {
 
 			});
