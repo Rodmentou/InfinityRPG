@@ -29,7 +29,7 @@ module.exports = function (apiRouter) {
 						username: user.username,
 						_id: user._id
 					}, jwtSecret, {
-						expiresIn: 1440
+						expiresIn: 360000
 					});
 
 					res.json({

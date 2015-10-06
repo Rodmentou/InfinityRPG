@@ -8,9 +8,9 @@ module.exports = function (apiRouter) {
 		user.password = req.body.password;
 		user.maxHp = 200;
 		user.hp = 200;
-		user.exp = 0;
-		user.def = 1;
-		user.atk = 2;
+		user.exp = 1;
+		user.def = 10;
+		user.atk = 20;
 
 		user.save( function (err) {
 			if (err) {

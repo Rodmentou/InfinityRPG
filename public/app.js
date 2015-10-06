@@ -1,30 +1,31 @@
 var app = angular.module('infinityRPG', ['ngRoute', 'ngCookies']);
 
-app.controller('GameController', function ($scope, $http, $cookies) {
+app.controller('GameController', function ($scope, $http, $cookies, $location) {
 	var cookieToken = $cookies.get('token');
 	$scope.nada = cookieToken;
 
 	$scope.logout = function () {
 		$cookies.remove('token');
+		$location.path('/');
 
 	};
 
 	$scope.getHpBar = function (user) {
-		var percentage = user.hp/user.maxHp + '00%';
+		var percentage = (user.hp/user.maxHp)*100 + '%';
 		return percentage;
 	};
 
 	$scope.attack = function (user) {
-		$http.post('http://localhost:8080/api/1x1', 
-			{ headers: {'x-acess-token' : cookieToken } })
+		$http.post('http://localhost:8080/api/1x1', user,
+			{ headers: {'x-access-token' : cookieToken } })
 			.then ( function (res) {
-
+				console.log(res.data);
 			}, function (res) {
 
 			});
 	};
 
-	
+
 
 	$scope.getBarClass = function (user) {
 		if (user.hp/user.maxHp > 0.6) {

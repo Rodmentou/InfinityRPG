@@ -6,6 +6,7 @@ var express = require('express'),
 	server = require('http').createServer(app),
 	io = require('socket.io')(server),
 	passport = require('passport'),
+	CronJob = require('cron').CronJob,
 	jwt = require('jsonwebtoken');
 
 
@@ -34,6 +35,9 @@ app.all('*', function(req, res, next) {
 
 mongoose.connect(dbUrl);
 
+
+
+
 var apiRouter = express.Router();
 require('./routes/signup')(apiRouter);
 require('./routes/auth')(apiRouter);
@@ -41,8 +45,15 @@ require('./routes/auth')(apiRouter);
 require('./routes/middlewares')(apiRouter);
 require('./routes/users')(apiRouter);
 require('./routes/1x1')(apiRouter);
-
 app.use('/api', apiRouter);
+
+var User = require('./public/models/user');
+new CronJob('*/10 * * * * *', function() {
+  console.log('HP Refreshed.');
+  User.find( {}, function (err, user) {
+  	//Increase Players' hp here.
+  });
+}, null, true, 'America/Los_Angeles');
 
 
 
