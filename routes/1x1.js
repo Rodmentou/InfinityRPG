@@ -8,19 +8,21 @@ module.exports = function (apiRouter) {
 					if (err) res.send(err);
 
 					User.findById ( req.body._id, function (err, defender) {
-						if (err) res.send(err);
+						//if (err) res.send(err);
 
 						if (defender.hp > 0) {
 							defender.hp -= attacker.atk - defender.def;
 							attacker.exp += Math.sqrt(defender.exp);
 
 							defender.save( function (err) {
-								if (err) res.send(err);
+								//if (err) res.send(err);
 
 								attacker.save ( function (err) {
-									if (err) res.send(err);
-
-									res.json(attacker);
+									if (err) {
+										res.send(err);
+									} else {
+										res.json(attacker);
+									}
 								});
 							});
 

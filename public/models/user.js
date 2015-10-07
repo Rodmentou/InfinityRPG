@@ -28,6 +28,19 @@ UserSchema.pre('save', function (next) {
 	});
 });
 
+UserSchema.pre('update', function (next) {
+	var user = this;
+	console.log(this.hp);
+
+
+	if (user.hp > user.maxHp) {
+		console.log(user.hp);
+		user.hp = maxHp;
+	}
+
+	next();
+});
+
 UserSchema.methods.comparePassword = function (password) {
 	var user = this;
 

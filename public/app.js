@@ -15,11 +15,16 @@ app.controller('GameController', function ($scope, $http, $cookies, $location) {
 		return percentage;
 	};
 
+	$scope.getLvl = function (user) {
+		return parseInt(Math.sqrt(user.exp));
+	};
+
+
 	$scope.attack = function (user) {
 		$http.post('http://localhost:8080/api/1x1', user,
 			{ headers: {'x-access-token' : cookieToken } })
 			.then ( function (res) {
-				console.log(res.data);
+				$scope.getPlayers();
 			}, function (res) {
 
 			});
@@ -38,14 +43,16 @@ app.controller('GameController', function ($scope, $http, $cookies, $location) {
 	};
 
 
-	$http.get('http://localhost:8080/api/users',
-		{ headers: {'x-access-token' : cookieToken } })
-		.then( function (res) {
-			$scope.users = res.data;
-		}, function (res) {
-	});
+	$scope.getPlayers = function() {
+		$http.get('http://localhost:8080/api/users',
+			{ headers: {'x-access-token' : cookieToken } })
+			.then( function (res) {
+				$scope.users = res.data;
+			}, function (res) {
+		});
+	};
 
-
+	$scope.getPlayers();
 
 });
 

@@ -48,11 +48,12 @@ require('./routes/1x1')(apiRouter);
 app.use('/api', apiRouter);
 
 var User = require('./public/models/user');
+//Increase all users HP
 new CronJob('*/10 * * * * *', function() {
-  console.log('HP Refreshed.');
-  User.find( {}, function (err, user) {
-  	//Increase Players' hp here.
-  });
+  User.update( {}, 
+  	{ $inc: { hp: 10 } }, {multi: true}, function () {
+  		console.log("Refresh free");
+  	});
 }, null, true, 'America/Los_Angeles');
 
 

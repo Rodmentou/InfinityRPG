@@ -1,6 +1,6 @@
 <div>Game page {{nada}}</div>
 <div class='form' style='width: 400px' ng-repeat='user in users'>
-	<b>{{user.username}}</b>
+	<b>{{user.username}}</b> Level {{getLvl(user)}}
 	<table class='table'>
 		<td>HP:{{user.hp}}/{{user.maxHp}}</td>
 		<td>Atk: {{user.atk}} </td>
