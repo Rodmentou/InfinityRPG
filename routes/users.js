@@ -1,5 +1,5 @@
 module.exports = function (apiRouter) {
-	var User = require('../public/models/user');
+	var User = require('../public/models/user.js');
 
 
 	apiRouter.route('/users')

@@ -7,8 +7,14 @@ var express = require('express'),
 	io = require('socket.io')(server),
 	passport = require('passport'),
 	CronJob = require('cron').CronJob,
-	jwt = require('jsonwebtoken');
+	jwt = require('jsonwebtoken'),
+	ejwt = require('express-jwt');
 
+
+var jwtCheck = ejwt({
+  secret: new Buffer('na8e2W6DPANiyFD55o8IpX-ygdeWxId6JQ7AWCaRI9psMq3RaagkCDpOyvr05o_t', 'base64'),
+  audience: 'kaW247PPvX8pfitQZWgTlSSFKNTJjmNL'
+});
 
 var config = require('./config');
 
@@ -24,6 +30,7 @@ app.use(morgan(env));
 app.use(express.static(__dirname + '/public'));
 app.use(passport.initialize());
 app.use(passport.session());
+//app.use('/api', jwtCheck);
 
 app.all('*', function(req, res, next) {
   res.header('Access-Control-Allow-Origin', '*');
@@ -47,7 +54,7 @@ require('./routes/users')(apiRouter);
 require('./routes/1x1')(apiRouter);
 app.use('/api', apiRouter);
 
-var User = require('./public/models/user');
+var User = require('./public/models/user.js');
 //Increase all users HP
 new CronJob('*/10 * * * * *', function() {
   User.update( {}, 

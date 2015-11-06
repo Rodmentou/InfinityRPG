@@ -1,5 +1,5 @@
 module.exports = function (apiRouter) {
-	var User = require('../public/models/user');
+	var User = require('../public/models/user.js');
 	var jwt = require('jsonwebtoken');
 	var config = require('../config.js');
 	var jwtSecret = config.jwtSecret;
@@ -9,7 +9,7 @@ module.exports = function (apiRouter) {
 		User.findOne( {
 			username: req.body.username
 		}).select('name username password').exec( function (err, user) {
-			if (err) throw err;
+			if (err) res.send(err);
 
 			if (!user) {
 				res.json({

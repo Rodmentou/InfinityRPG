@@ -8,4 +8,5 @@ style='		width: 400px;
 	<input class='form-control' type='password' ng-model='user.password' placeholder='Password'>
 	<button ng-click='auth(user)' class='btn btn-success'>Play!</button>
 	<button ng-click='signup(user)' class='btn btn-info'>Signup</button>
+	<div ng-if='error'>{{error}}</div>
 </div>

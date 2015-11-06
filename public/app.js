@@ -1,14 +1,38 @@
 var app = angular.module('infinityRPG', ['ngRoute', 'ngCookies']);
 
-app.controller('GameController', function ($scope, $http, $cookies, $location) {
+
+app.controller('HeaderController', function ($scope, $http, $cookies, $location) {
 	var cookieToken = $cookies.get('token');
-	$scope.nada = cookieToken;
+
+
+	$scope.getMe = function () {
+
+		$http.get('http://localhost:8080/api/me', 
+			{ headers: {'x-access-token' : cookieToken } })
+			.then ( function (res) {
+				$scope.me = res.data;
+			}, function (res) {
+				console.log(res.data);
+			});
+	};
+
 
 	$scope.logout = function () {
 		$cookies.remove('token');
+		$scope.me = {};
 		$location.path('/');
 
 	};
+
+
+	$scope.getMe();
+});
+
+app.controller('GameController', function ($scope, $http, $cookies) {
+	var cookieToken = $cookies.get('token');
+	$scope.nada = cookieToken;
+
+
 
 	$scope.getHpBar = function (user) {
 		var percentage = (user.hp/user.maxHp)*100 + '%';
@@ -24,6 +48,7 @@ app.controller('GameController', function ($scope, $http, $cookies, $location) {
 		$http.post('http://localhost:8080/api/1x1', user,
 			{ headers: {'x-access-token' : cookieToken } })
 			.then ( function (res) {
+				console.log(res.data);
 				$scope.getPlayers();
 			}, function (res) {
 
@@ -49,10 +74,16 @@ app.controller('GameController', function ($scope, $http, $cookies, $location) {
 			.then( function (res) {
 				$scope.users = res.data;
 			}, function (res) {
+				console.log('Erro');
 		});
 	};
 
 	$scope.getPlayers();
+	
+
+});
+
+app.controller('FooterController', function ($scope) {
 
 });
 
@@ -76,10 +107,13 @@ app.controller('LoginController', function ($scope, $http, $location, $cookies) 
 	$scope.auth = function (user) {
 		$http.post('http://localhost:8080/api/auth', user)
 			.then ( function (res) {
-				$cookies.put('token', res.data.token);
-				$location.path('/play');
+				if (res.data.token){
+					$cookies.put('token', res.data.token);
+					$location.path('/play');
+				}
+				
 			}, function (res) {
-
+				$scope.error = 'Error on login.';
 			});
 	};
 
