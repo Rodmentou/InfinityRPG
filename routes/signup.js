@@ -1,24 +1,25 @@
-module.exports = function (apiRouter) {
-	var User = require('../public/models/user');
-	apiRouter.post('/signup', function (req, res) {
-		var user = new User();
+module.exports = function (api, players) {
+	api.post('/signup', function (req, res) {
 
-		user.name = req.body.name;
-		user.username = req.body.username;
-		user.password = req.body.password;
-		user.maxHp = 200;
-		user.hp = 200;
-		user.exp = 1;
-		user.def = 10;
-		user.atk = 20;
+		var user = {};
+		if(req.body.username){
+			if (!players[req.body.username]) {
 
-		user.save( function (err) {
-			if (err) {
-				if (err.code == 11000) {
-					return res.json({ success: false, message: 'User already exists'});
-				} else { return res.send(err) }
-			}
-			res.json({ message: 'User created'});
-		});
+				user.username = req.body.username;
+				user.maxHp = 200;
+				user.hp = 200;
+				user.exp = 1;
+				user.def = 10;
+				user.atk = 20;
+
+				players[user.username] = user;
+				console.log(players);
+				res.json(user);
+			} else {
+				res.json({success: false, message: 'Username in use.'});
+			};
+		} else {
+			res.json({success: false, message: 'Username empty.'});
+		};
 	});
 }

@@ -6,7 +6,7 @@ var express = require('express'),
 	CronJob = require('cron').CronJob;
 
 process.env.PORT = 8080;
-process.env.env = 'dev';
+process.env.NODE_ENV = 'dev';
 
 var port = process.env.PORT;
 var env = process.env.NODE_ENV;
@@ -24,18 +24,23 @@ app.all('*', function(req, res, next) {
   next();
 });
 
+var players = [];
 
-var apiRouter = express.Router();
-require('./routes/signup')(apiRouter);
-require('./routes/auth')(apiRouter);
+var api = express.Router();
+require('./routes/signup')(api, players);
 //ONLY AUTHENTICATED USERS BEYOND THIS POINT.
-require('./routes/middlewares')(apiRouter);
-require('./routes/users')(apiRouter);
-require('./routes/1x1')(apiRouter);
-app.use('/api', apiRouter);
+require('./routes/middlewares')(api);
+require('./routes/1x1')(api, players);
+app.use('/api', api);
 
 //Increase all users HP
 new CronJob('*/10 * * * * *', function() {
+	console.log(players);
+	for (var i = 0; i < players.length; i++) {
+		if (players[i].maxHp > players[i].hp) players[i].hp += 10;
+		if (players[i].hp >= players[i].maxHp) players[i].hp = players[i].maxHp;
+		//console.log(players);
+	};
 
 }, null, true, 'America/Los_Angeles');
 
