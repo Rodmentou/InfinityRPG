@@ -31,11 +31,11 @@ require('./routes/signup')(api, players);
 //ONLY AUTHENTICATED USERS BEYOND THIS POINT.
 require('./routes/middlewares')(api);
 require('./routes/1x1')(api, players);
+require('./routes/users')(api, players);
 app.use('/api', api);
 
 //Increase all users HP
 new CronJob('*/10 * * * * *', function() {
-	console.log(players);
 	for (var i = 0; i < players.length; i++) {
 		if (players[i].maxHp > players[i].hp) players[i].hp += 10;
 		if (players[i].hp >= players[i].maxHp) players[i].hp = players[i].maxHp;

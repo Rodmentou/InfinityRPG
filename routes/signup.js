@@ -13,7 +13,6 @@ module.exports = function (api, players) {
 				user.atk = 20;
 
 				players[user.username] = user;
-				console.log(players);
 				res.json(user);
 			} else {
 				res.json({success: false, message: 'Username in use.'});

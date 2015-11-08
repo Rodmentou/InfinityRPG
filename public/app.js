@@ -1,38 +1,10 @@
 var app = angular.module('infinityRPG', ['ngRoute', 'ngCookies']);
 
 
-app.controller('HeaderController', function ($scope, $http, $cookies, $location) {
-	var cookieToken = $cookies.get('token');
-
-
-	$scope.getMe = function () {
-
-		$http.get('http://localhost:8080/api/me', 
-			{ headers: {'x-access-token' : cookieToken } })
-			.then ( function (res) {
-				$scope.me = res.data;
-			}, function (res) {
-				console.log(res.data);
-			});
-	};
-
-
-	$scope.logout = function () {
-		$cookies.remove('token');
-		$scope.me = {};
-		$location.path('/');
-
-	};
-
-
-	$scope.getMe();
-});
-
 app.controller('GameController', function ($scope, $http, $cookies) {
 	var cookieToken = $cookies.get('token');
-	$scope.nada = cookieToken;
-
-
+	$scope.me = $cookies.get('user');
+	console.log($scope.me);
 
 	$scope.getHpBar = function (user) {
 		var percentage = (user.hp/user.maxHp)*100 + '%';
@@ -51,11 +23,22 @@ app.controller('GameController', function ($scope, $http, $cookies) {
 				console.log(res.data);
 				$scope.getPlayers();
 			}, function (res) {
+				console.log('Error');
 
 			});
 	};
 
 
+	$scope.getMe = function(cookieToken) {
+		$http.get('http://localhost:8080/api/users',
+			{ headers: {'x-access-token' : cookieToken } })
+			.then ( function (res) {
+				console.log(res.data);
+				$scope.me = res.data;
+			}, function (res) {
+				console.log('Error fetching data.');
+			});
+	};
 
 	$scope.getBarClass = function (user) {
 		if (user.hp/user.maxHp > 0.6) {
@@ -78,8 +61,9 @@ app.controller('GameController', function ($scope, $http, $cookies) {
 		});
 	};
 
-	$scope.getPlayers();
-	
+	$scope.getMe(cookieToken);
+	//$scope.getPlayers();
+
 
 });
 
@@ -89,16 +73,16 @@ app.controller('FooterController', function ($scope) {
 
 app.controller('LoginController', function ($scope, $http, $location, $cookies) {
 	var cookieToken = $cookies.get('token');
-	if (cookieToken) {
 
-		$location.path('/play');
-	};
 
 
 	$scope.signup = function (user) {
 		$http.post('http://localhost:8080/api/signup', user)
 			.then( function (res) {
-				$scope.auth(user);
+				$cookies.put('token', res.data.username);
+				$cookies.put('user', res.data);
+				console.log(typeof(res.data));
+				$location.path('/play');
 			}, function (res) {
 
 			});
@@ -111,7 +95,7 @@ app.controller('LoginController', function ($scope, $http, $location, $cookies) 
 					$cookies.put('token', res.data.token);
 					$location.path('/play');
 				}
-				
+
 			}, function (res) {
 				$scope.error = 'Error on login.';
 			});
@@ -137,7 +121,7 @@ app.config( function ($routeProvider, $locationProvider) {
 			templateUrl: 'partials/game.html'
 		})
 
-		.when ('/signup', 
+		.when ('/signup',
 		{
 			controller: 'SignupController',
 			templateUrl: 'partials/signup.html'
