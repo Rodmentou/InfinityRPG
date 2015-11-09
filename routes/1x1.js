@@ -1,43 +1,43 @@
-module.exports = function (apiRouter) {
-	var User = require('../public/models/user');
+module.exports = function (api, players) {
 
-	apiRouter.route('/1x1')
+	api.route('/1x1')
 		.post( function (req, res) {
-			if (req.decoded._id != req.body._id) { //Are you the same person?
-				User.findById (req.decoded._id, function (err, attacker) {
+			var attackerName = req.decoded.username;
+			var defenderName = req.body.username;
 
-					attacker.hp -= 1000;
-					attacker.save ( function (err) {
+			if (attackerName != defenderName) { //Are you the same person?
+				if ( (players[attackerName]) && (players[defenderName]) ) {
 
-					});
+						var attacker = players[attackerName];
+						var defender = players[defenderName];
+						var attackerLvl = Math.sqrt(attacker.exp);
+						var defenderLvl = Math.sqrt(attacker.exp);
 
-					User.findById(req.body._id, function (err, defender) {
-						var attackerDmgDealt = 0;
-						var defenderDmgDealt = 0;
 
-						for (var i=0; i<10; i++) {
-							attackerDmgDealt += attacker.atk - defender.def;
-							defenderDmgDealt += defender.atk - attacker.def;
+						attacker.hp -= defender.atk - attacker.def;
+						attacker.exp += defenderLvl;
+
+						defender.hp -= attacker.atk - defender.def;
+						defender.exp += attackerLvl;
+
+						if (defender.hp <= 0) {
+							attacker.exp += defenderLvl;
+							delete players[defenderName];
 						};
-						console.log(attacker.hp);
-						attacker.hp -= defenderDmgDealt;
-						console.log(attacker.hp);
-						console.log(attacker);
-						attacker.save( function (err) {	
-							return true;
-						});
-						defender.hp -= attackerDmgDealt;
-						defender.save( function (err) {
-							return true;
-								//if (err) res.send(err);	
-						});
-						res.json(attacker);
 
-					});
-				});
+						if (attacker.hp <= 0) {
+							if (defender) defender.exp += attackerLvl;
+							delete players[attackerName];
+						};
 
-			} else {
-				res.json({ message: 'Cant attack yourself' });
-			}
+							(attacker) ? res.json(attacker) : res.json({message: 'You are dead.'});
+
+					} else {
+						res.json({ success: false, message: 'Cant attack nothing.' });
+					}
+				} else {
+					res.json({ success: false, message: 'Cant attack yourself.' });
+				}
+
 		});
 }
