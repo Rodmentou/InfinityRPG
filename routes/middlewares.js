@@ -9,8 +9,7 @@ module.exports = function (api) {
 			next();
 
 		} else {
-			console.log('passou aqui');
-			return res.status(403).send({
+			return res.status(403).json({
 				success: false,
 				message: 'Token needed.'
 			});

@@ -55,7 +55,8 @@ app.controller('GameController', function ($scope, $http, $cookies) {
 		$http.get('http://localhost:8080/api/users',
 			{ headers: {'x-access-token' : cookieToken } })
 			.then( function (res) {
-				$scope.users = res.data;
+				$scope.users = (res.data);
+				console.log($scope.users);
 			}, function (res) {
 				console.log('Erro');
 		});
@@ -81,7 +82,6 @@ app.controller('LoginController', function ($scope, $http, $location, $cookies) 
 			.then( function (res) {
 				$cookies.put('token', res.data.username);
 				$cookies.put('user', res.data);
-				console.log(typeof(res.data));
 				$location.path('/play');
 			}, function (res) {
 

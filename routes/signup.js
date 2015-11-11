@@ -12,7 +12,7 @@ module.exports = function (api, players) {
 				user.def = 10;
 				user.atk = 20;
 
-				players[user.username] = user;
+				players.push(user);
 				res.json(user);
 			} else {
 				res.json({success: false, message: 'Username in use.'});
