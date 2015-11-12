@@ -4,7 +4,8 @@ var app = angular.module('infinityRPG', ['ngRoute', 'ngCookies']);
 app.controller('GameController', function ($scope, $http, $cookies) {
 	var cookieToken = $cookies.get('token');
 	$scope.me = $cookies.get('user');
-	console.log($scope.me);
+
+	$scope.test = 'adsad';
 
 	$scope.getHpBar = function (user) {
 		var percentage = (user.hp/user.maxHp)*100 + '%';
@@ -17,6 +18,7 @@ app.controller('GameController', function ($scope, $http, $cookies) {
 
 
 	$scope.attack = function (user) {
+		console.log(user);
 		$http.post('http://localhost:8080/api/1x1', user,
 			{ headers: {'x-access-token' : cookieToken } })
 			.then ( function (res) {
@@ -33,7 +35,6 @@ app.controller('GameController', function ($scope, $http, $cookies) {
 		$http.get('http://localhost:8080/api/users',
 			{ headers: {'x-access-token' : cookieToken } })
 			.then ( function (res) {
-				console.log(res.data);
 				$scope.me = res.data;
 			}, function (res) {
 				console.log('Error fetching data.');
@@ -55,15 +56,15 @@ app.controller('GameController', function ($scope, $http, $cookies) {
 		$http.get('http://localhost:8080/api/users',
 			{ headers: {'x-access-token' : cookieToken } })
 			.then( function (res) {
-				$scope.users = (res.data);
-				console.log($scope.users);
+				$scope.players = res.data;
+				console.log($scope.players);
 			}, function (res) {
 				console.log('Erro');
 		});
 	};
 
 	$scope.getMe(cookieToken);
-	//$scope.getPlayers();
+	$scope.getPlayers();
 
 
 });

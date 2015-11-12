@@ -1,20 +1,19 @@
-
-<div class='container' ng-repeat='user in users'>
+<div class='container' ng-repeat='player in players'>
 	<div class='row cardContainer'>
 		<div class='span3 card'>
-			<b>{{user.username}}</b> Level {{getLvl(user)}}
+			<b>{{player.username}}</b> Level {{getLvl(player)}}
 			<table class='table'>
-				<td>HP:{{user.hp}}/{{user.maxHp}}</td>
-				<td>Atk: {{user.atk}} </td>
-				<td>Def: {{user.def}} </td>
-				<td><button ng-click='attack(user)' class="btn glyphicon glyphicon-screenshot">Attack</button></td>
+				<td>HP:{{player.hp}}/{{player.maxHp}}</td>
+				<td>Atk: {{player.atk}} </td>
+				<td>Def: {{player.def}} </td>
+				<td><button ng-click='attack(player)' class="btn glyphicon glyphicon-screenshot">Attack</button></td>
 
 			</table>
 			<div class="progress">
-		  		<div class="progress-bar progress-bar-striped" role="progressbar" ng-class='getBarClass(user)' ng-style="{width: getHpBar(user)}">
+		  		<div class="progress-bar progress-bar-striped" role="progressbar" ng-class='getBarClass(player)' ng-style="{width: getHpBar(player)}">
 		  		</div>
 			</div>
 		</div>
 	</div>
 </div>
-<div> {{me}} </div>
+<div>  </div>
