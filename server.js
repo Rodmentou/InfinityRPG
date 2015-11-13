@@ -24,7 +24,7 @@ app.all('*', function(req, res, next) {
   next();
 });
 
-var players = [];
+var players = {};
 
 
 var api = express.Router();

@@ -36,8 +36,7 @@ module.exports = function (api, players) {
 						res.json({ success: false, message: 'Cant attack nothing.' });
 					}
 				} else {
-					res.json({ success: false, message: 'Cant attack yourself.',
-				 					attackerName: attackerName, defenderName: defenderName});
+					res.json({ success: false, message: 'Cant attack yourself.'});
 				}
 
 		});

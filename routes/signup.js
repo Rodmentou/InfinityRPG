@@ -12,6 +12,22 @@ module.exports = function (api, players) {
 				user.def = 10;
 				user.atk = 20;
 
+				user.stats = {
+					str: 5,
+					int: 5,
+					dex: 5 };
+				user.equips = {
+					head: [],
+					leftHand: [],
+					rightHand: [],
+					bothHand: [],
+					chest: [],
+					legs: [],
+					feet: []
+				};
+
+				
+
 				//players.push(user);
 				var username = user.username;
 				players[username] = user;

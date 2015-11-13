@@ -1,6 +1,6 @@
 {
   "name": "infinity_rpg",
-  "version": "0.0.1",
+  "version": "0.2.0",
   "description": "Single player RPG with API for learning purposes.",
   "main": "server.js",
   "scripts": {
@@ -17,22 +17,16 @@
     "mongodb",
     "express"
   ],
-  "author": "Rodrigo Souza",
+  "author": "Rodmentou",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/Rodmentou/InfinityRPG/issues"
   },
   "homepage": "https://github.com/Rodmentou/InfinityRPG#readme",
   "dependencies": {
-    "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.14.1",
     "cron": "^1.0.9",
     "express": "^4.13.3",
-    "express-jwt": "^3.1.0",
-    "jsonwebtoken": "^5.4.0",
-    "mongoose": "^4.1.9",
-    "morgan": "^1.6.1",
-    "passport": "^0.3.0",
-    "socket.io": "^1.3.7"
+    "morgan": "^1.6.1"
   }
 }
