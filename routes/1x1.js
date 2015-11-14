@@ -16,12 +16,14 @@ module.exports = function (api, players) {
 
 						attacker.hp -= defender.atk - attacker.def;
 						attacker.exp += defenderLvl;
+						attacker.gold += (defender.gold/10);
 
 						defender.hp -= attacker.atk - defender.def;
 						defender.exp += attackerLvl;
 
 						if (defender.hp <= 0) {
 							attacker.exp += defenderLvl;
+							attacker.gold += defender.gold;
 							delete players[defenderName];
 						};
 

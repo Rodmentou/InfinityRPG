@@ -11,6 +11,7 @@ module.exports = function (api, players) {
 				user.exp = 1;
 				user.def = 10;
 				user.atk = 20;
+				user.gold = 10;
 
 				user.stats = {
 					str: 5,
@@ -26,7 +27,7 @@ module.exports = function (api, players) {
 					feet: []
 				};
 
-				
+
 
 				//players.push(user);
 				var username = user.username;
