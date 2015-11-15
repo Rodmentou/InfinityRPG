@@ -29,9 +29,9 @@ var players = {};
 
 var api = express.Router();
 require('./routes/signup')(api, players);
-require('./routes/items')(api);
 //ONLY AUTHENTICATED USERS BEYOND THIS POINT.
 require('./routes/middlewares')(api);
+require('./routes/items')(api, players);
 require('./routes/1x1')(api, players);
 require('./routes/users')(api, players);
 

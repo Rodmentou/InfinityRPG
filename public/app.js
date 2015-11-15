@@ -16,9 +16,17 @@ app.controller('GameController', function ($scope, $http, $cookies) {
 		return parseInt(Math.sqrt(user.exp));
 	};
 
+	$scope.useItem = function ( itemName ) {
+		$http.get('http://localhost:8080/api/items/use/' + itemName,
+			{ headers: { 'x-access-token' : cookieToken } })
+			.then( function (res) {
+				$scope.getPlayers();
+			}, function (res) {
+				console.log('Error on using item');
+			});
+	};
 
 	$scope.attack = function (user) {
-		console.log(user);
 		$http.post('http://localhost:8080/api/1x1', user,
 			{ headers: {'x-access-token' : cookieToken } })
 			.then ( function (res) {
