@@ -12,13 +12,18 @@ module.exports = function (api, players) {
 						var defender = players[defenderName];
 						var attackerLvl = Math.sqrt(attacker.exp);
 						var defenderLvl = Math.sqrt(attacker.exp);
+						var attackerDmg = attacker.atk - defender.def;
+						var defenderDmg = defender.atk - attacker.def;
 
 
-						attacker.hp -= defender.atk - attacker.def;
+						(attackerDmg > defenderDmg) ? //Award gold to the highest dmg.
+							attacker.gold += (defender.gold/10) :
+							defender.gold += (attacker.gold/10);
+
+						attacker.hp -= defenderDmg;
 						attacker.exp += defenderLvl;
-						attacker.gold += (defender.gold/10);
 
-						defender.hp -= attacker.atk - defender.def;
+						defender.hp -= attackerDmg;
 						defender.exp += attackerLvl;
 
 						if (defender.hp <= 0) {
