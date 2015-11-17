@@ -65,14 +65,14 @@ app.controller('GameController', function ($scope, $http, $cookies) {
 			{ headers: {'x-access-token' : cookieToken } })
 			.then( function (res) {
 				$scope.players = res.data;
-				console.log($scope.players);
 			}, function (res) {
-				console.log('Erro');
+				console.log('Error');
 		});
 	};
 
 	$scope.getMe(cookieToken);
 	$scope.getPlayers();
+	var refreshPlayers = setInterval( function(){ $scope.getPlayers(); }, 30000);
 
 
 });

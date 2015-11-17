@@ -5,11 +5,9 @@ var express = require('express'),
 	server = require('http').createServer(app),
 	CronJob = require('cron').CronJob;
 
-process.env.PORT = 8080;
-process.env.NODE_ENV = 'dev';
 
-var port = process.env.PORT;
-var env = process.env.NODE_ENV;
+var port = process.env.PORT || 8080;
+var env = process.env.NODE_ENV || 'dev';
 
 
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -35,15 +33,15 @@ require('./routes/items')(api, players);
 require('./routes/1x1')(api, players);
 require('./routes/users')(api, players);
 
-
-
 app.use('/api', api);
 
 //Increase all users HP
 new CronJob('*/10 * * * * *', function() {
-	for (var i = 0; i < players.length; i++) {
-		if (players[i].maxHp > players[i].hp) players[i].hp += 10;
-		if (players[i].hp >= players[i].maxHp) players[i].hp = players[i].maxHp;
+//	console.log(players);
+	for (player in players) {
+		//console.log(player.hp);
+		if (player.maxHp > player.hp) player.hp += 10;
+		if (player.hp >= player.maxHp) player.hp = player.maxHp;
 		//console.log(players);
 	};
 
