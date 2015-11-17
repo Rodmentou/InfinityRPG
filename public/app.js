@@ -17,7 +17,7 @@ app.controller('GameController', function ($scope, $http, $cookies) {
 	};
 
 	$scope.useItem = function ( itemName ) {
-		$http.get('http://localhost:8080/api/items/use/' + itemName,
+		$http.get('/api/items/use/' + itemName,
 			{ headers: { 'x-access-token' : cookieToken } })
 			.then( function (res) {
 				$scope.getPlayers();
@@ -27,7 +27,7 @@ app.controller('GameController', function ($scope, $http, $cookies) {
 	};
 
 	$scope.attack = function (user) {
-		$http.post('http://localhost:8080/api/1x1', user,
+		$http.post('/api/1x1', user,
 			{ headers: {'x-access-token' : cookieToken } })
 			.then ( function (res) {
 				console.log(res.data);
@@ -40,7 +40,7 @@ app.controller('GameController', function ($scope, $http, $cookies) {
 
 
 	$scope.getMe = function(cookieToken) {
-		$http.get('http://localhost:8080/api/users',
+		$http.get('/api/users',
 			{ headers: {'x-access-token' : cookieToken } })
 			.then ( function (res) {
 				$scope.me = res.data;
@@ -61,7 +61,7 @@ app.controller('GameController', function ($scope, $http, $cookies) {
 
 
 	$scope.getPlayers = function() {
-		$http.get('http://localhost:8080/api/users',
+		$http.get('/api/users',
 			{ headers: {'x-access-token' : cookieToken } })
 			.then( function (res) {
 				$scope.players = res.data;
@@ -87,7 +87,7 @@ app.controller('LoginController', function ($scope, $http, $location, $cookies) 
 
 
 	$scope.signup = function (user) {
-		$http.post('http://localhost:8080/api/signup', user)
+		$http.post('/api/signup', user)
 			.then( function (res) {
 				$cookies.put('token', res.data.username);
 				$cookies.put('user', res.data);
@@ -98,7 +98,7 @@ app.controller('LoginController', function ($scope, $http, $location, $cookies) 
 	};
 
 	$scope.auth = function (user) {
-		$http.post('http://localhost:8080/api/auth', user)
+		$http.post('/api/auth', user)
 			.then ( function (res) {
 				if (res.data.token){
 					$cookies.put('token', res.data.token);

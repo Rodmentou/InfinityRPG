@@ -2,7 +2,6 @@ var express = require('express'),
 	app = express(),
 	morgan = require('morgan'),
 	bodyParser = require('body-parser'),
-	server = require('http').createServer(app),
 	CronJob = require('cron').CronJob;
 
 
@@ -52,6 +51,6 @@ new CronJob('*/10 * * * * *', function() {
 
 
 
-server.listen(port, function () {
+app.listen(port, function () {
 	console.log('Server running in ' + env + ' at ' + port + '.');
 });
