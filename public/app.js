@@ -3,9 +3,7 @@ var app = angular.module('infinityRPG', ['ngRoute', 'ngCookies']);
 
 app.controller('GameController', function ($scope, $http, $cookies) {
 	var cookieToken = $cookies.get('token');
-	$scope.me = $cookies.get('user');
-
-	$scope.test = 'adsad';
+	//$scope.me = $cookies.get('user');
 
 	$scope.getHpBar = function (user) {
 		var percentage = (user.hp/user.maxHp)*100 + '%';
@@ -14,6 +12,16 @@ app.controller('GameController', function ($scope, $http, $cookies) {
 
 	$scope.getLvl = function (user) {
 		return parseInt(Math.sqrt(user.exp));
+	};
+
+	$scope.getBarClass = function (user) {
+		if (user.hp/user.maxHp > 0.6) {
+			return 'progress-bar-info';
+		} else if (user.hp/user.maxHp > 0.3) {
+			return 'progress-bar-warning';
+		} else {
+			return 'progress-bar-danger';
+		}
 	};
 
 	$scope.useItem = function ( itemName ) {
@@ -49,15 +57,7 @@ app.controller('GameController', function ($scope, $http, $cookies) {
 			});
 	};
 
-	$scope.getBarClass = function (user) {
-		if (user.hp/user.maxHp > 0.6) {
-			return 'progress-bar-info';
-		} else if (user.hp/user.maxHp > 0.3) {
-			return 'progress-bar-warning';
-		} else {
-			return 'progress-bar-danger';
-		}
-	};
+
 
 
 	$scope.getPlayers = function() {
