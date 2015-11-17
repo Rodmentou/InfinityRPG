@@ -40,7 +40,7 @@ app.controller('GameController', function ($scope, $http, $cookies) {
 
 
 	$scope.getMe = function(cookieToken) {
-		$http.get('/api/users',
+		$http.get('/api/me',
 			{ headers: {'x-access-token' : cookieToken } })
 			.then ( function (res) {
 				$scope.me = res.data;
