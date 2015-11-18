@@ -93,10 +93,6 @@ app.controller('FooterController', function ($scope) {
 });
 
 app.controller('LoginController', function ($scope, $http, $location, $cookies) {
-	var cookieToken = $cookies.get('token');
-	var lastUser = JSON.parse(window.localStorage.getItem('user'));
-	if (lastUser) $scope.lastName = lastUser.username;
-
 
 	$scope.signup = function (user) {
 		$http.post('/api/signup', user)

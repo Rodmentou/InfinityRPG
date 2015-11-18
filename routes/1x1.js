@@ -14,20 +14,22 @@ module.exports = function (api, players) {
 						var attackerLvl = Math.sqrt(attacker.exp);
 						var defenderLvl = Math.sqrt(attacker.exp);
 
-						var attackerDex = (attacker.stats.dex - defenderLvl - 1)/10;
-						var defenderDex = (defender.stats.dex - attackerLvl - 1)/10;
+						var attackerDex = (attacker.stats.dex*3 - attackerLvl)/10;
+						(attackerDex > 0) ? function(){} : attackerDex = 0.4;
+						(attackerDex > 1) ? attackerDex = 1 : function() {};
+						var attackerStr = attacker.stats.str;
+						var attackerInt = attacker.stats.int;
 
-						var attackerStrMod = Math.random() * (attackerDex - 0.6) + 0.6;
-						var attackerIntMod = Math.random() * (attackerDex - 0.3) + 0.3;
-						var defenderStrMod = Math.random() * (defenderDex - 0.6) + 0.6;
-						var defenderIntMod = Math.random() * (defenderDex - 0.3) + 0.3;
+						var defenderDex = (defender.stats.dex*3 - defenderLvl)/10;
+						(defenderDex > 0) ? function(){} : defenderDex = 0.4;
+						(defenderDex > 1) ? defenderDex = 1 : function() {};
+						var defenderStr = defender.stats.str;
+						var defenderInt = defender.stats.int;
 
-						var attackerDmg = ( (attacker.stats.str - defender.stats.str) * attackerStrMod
-															+ (attacker.stats.int - defender.stats.int) * attackerIntMod * 2) + 1;
-						var defenderDmg = ( (defender.stats.str - attacker.stats.str) * defenderStrMod
-															+ (defender.stats.int - attacker.stats.int) * defenderIntMod * 2) + 1;
-						console.log(attackerDmg);
-						console.log(defenderDmg);
+						var attackerDmg = ( (attackerStr - defenderStr)
+															+ (attackerInt - defenderInt) * 2) * attackerDex + 1;
+						var defenderDmg = ( (defenderStr - attackerStr)
+															+ (defenderInt - attackerInt) * 2) * defenderDex + 1;
 
 
 						if (attackerDmg > defenderDmg) { //Award gold to the highest dmg.
