@@ -14,8 +14,8 @@ module.exports = function (api, players) {
 						var attackerLvl = Math.sqrt(attacker.exp);
 						var defenderLvl = Math.sqrt(attacker.exp);
 
-						var attackerDex = (attacker.stats.dex - attackerLvl - 1)/10;
-						var defenderDex = (defender.stats.dex - defenderLvl - 1)/10;
+						var attackerDex = (attacker.stats.dex - defenderLvl - 1)/10;
+						var defenderDex = (defender.stats.dex - attackerLvl - 1)/10;
 
 						var attackerStrMod = Math.random() * (attackerDex - 0.6) + 0.6;
 						var attackerIntMod = Math.random() * (attackerDex - 0.3) + 0.3;

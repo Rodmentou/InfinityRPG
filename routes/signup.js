@@ -1,9 +1,18 @@
 module.exports = function (api, players) {
+	var jwt = require('jsonwebtoken');
+	var jwtSecret = 'luanaLinda';
+
 	api.post('/signup', function (req, res) {
 
 		var user = {};
 		if(req.body.username){
 			if (!players[req.body.username]) {
+
+				var token = jwt.sign({
+					username: req.body.username
+				}, jwtSecret, {
+					expiresIn: 360000
+				});
 
 				user = {
 					username: req.body.username,
@@ -13,7 +22,6 @@ module.exports = function (api, players) {
 					def: 10,
 					atk: 10,
 					gold: 50,
-
 
 					stats: {
 						str: 5,
@@ -38,10 +46,12 @@ module.exports = function (api, players) {
 
 
 
+
+
 				//players.push(user);
 				var username = user.username;
 				players[username] = user;
-				res.json(user);
+				res.json({user: user, token: token});
 			} else {
 				res.json({success: false, message: 'Username in use.'});
 			};

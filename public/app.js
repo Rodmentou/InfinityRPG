@@ -93,14 +93,15 @@ app.controller('FooterController', function ($scope) {
 
 app.controller('LoginController', function ($scope, $http, $location, $cookies) {
 	var cookieToken = $cookies.get('token');
-
+	var lastUser = JSON.parse(window.localStorage.getItem('user'));
+	if (lastUser) $scope.lastName = lastUser.username;
 
 
 	$scope.signup = function (user) {
 		$http.post('/api/signup', user)
 			.then( function (res) {
-				$cookies.put('token', res.data.username);
-				$cookies.put('user', res.data);
+				$cookies.put('token', res.data.token);
+				window.localStorage.setItem('user', JSON.stringify(res.data.user));
 				$location.path('/play');
 			}, function (res) {
 
