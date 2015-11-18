@@ -32,6 +32,7 @@ require('./routes/middlewares')(api);
 require('./routes/items')(api, players);
 require('./routes/1x1')(api, players);
 require('./routes/users')(api, players);
+require('./routes/me')(api, players);
 
 app.use('/api', api);
 

@@ -10,20 +10,38 @@ module.exports = function (api, players) {
 
 						var attacker = players[attackerName];
 						var defender = players[defenderName];
+
 						var attackerLvl = Math.sqrt(attacker.exp);
 						var defenderLvl = Math.sqrt(attacker.exp);
-						var attackerDmg = attacker.atk - defender.def;
-						var defenderDmg = defender.atk - attacker.def;
+
+						var attackerDex = (attacker.stats.dex - attackerLvl - 1)/10;
+						var defenderDex = (defender.stats.dex - defenderLvl - 1)/10;
+
+						var attackerStrMod = Math.random() * (attackerDex - 0.6) + 0.6;
+						var attackerIntMod = Math.random() * (attackerDex - 0.3) + 0.3;
+						var defenderStrMod = Math.random() * (defenderDex - 0.6) + 0.6;
+						var defenderIntMod = Math.random() * (defenderDex - 0.3) + 0.3;
+
+						var attackerDmg = ( (attacker.stats.str - defender.stats.str) * attackerStrMod
+															+ (attacker.stats.int - defender.stats.int) * attackerIntMod * 2) + 1;
+						var defenderDmg = ( (defender.stats.str - attacker.stats.str) * defenderStrMod
+															+ (defender.stats.int - attacker.stats.int) * defenderIntMod * 2) + 1;
+						console.log(attackerDmg);
+						console.log(defenderDmg);
 
 
-						(attackerDmg > defenderDmg) ? //Award gold to the highest dmg.
-							attacker.gold += (defender.gold/10) :
+						if (attackerDmg > defenderDmg) { //Award gold to the highest dmg.
+							attacker.gold += (defender.gold/10);
+							defender.gold -= (defender.gold/10);
+						} else {
 							defender.gold += (attacker.gold/10);
+							attacker.gold -= (attacker.gold/10);
+						};
 
-						attacker.hp -= defenderDmg;
+						(defenderDmg > 0) ? attacker.hp -= defenderDmg : attacker.hp --;
 						attacker.exp += defenderLvl;
 
-						defender.hp -= attackerDmg;
+						(attackerDmg > 0) ? defender.hp -= attackerDmg : defender.hp --;
 						defender.exp += attackerLvl;
 
 						if (defender.hp <= 0) {

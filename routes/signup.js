@@ -5,27 +5,36 @@ module.exports = function (api, players) {
 		if(req.body.username){
 			if (!players[req.body.username]) {
 
-				user.username = req.body.username;
-				user.maxHp = 200;
-				user.hp = 200;
-				user.exp = 1;
-				user.def = 10;
-				user.atk = 20;
-				user.gold = 10;
+				user = {
+					username: req.body.username,
+					maxHp: 200,
+					hp: 200,
+					exp: 1,
+					def: 10,
+					atk: 10,
+					gold: 50,
 
-				user.stats = {
-					str: 5,
-					int: 5,
-					dex: 5 };
-				user.equips = {
-					head: [],
-					leftHand: [],
-					rightHand: [],
-					bothHand: [],
-					chest: [],
-					legs: [],
-					feet: []
+
+					stats: {
+						str: 5,
+						int: 5,
+						dex: 5,
+						pointsUsed: 0
+					},
+
+					equips: {
+						head: [],
+						leftHand: [],
+						rightHand: [],
+						bothHand: [],
+						chest: [],
+						legs: [],
+						feet: []
+					},
+
+					history: []
 				};
+
 
 
 

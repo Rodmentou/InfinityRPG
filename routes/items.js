@@ -11,7 +11,7 @@ module.exports = function (api, players, items) {
   var items = {};
   items.redPotion = function (players, username) {
   	var player = players[username];
-  	if ( (player.hp <= 200) && (player.gold >= 10) ) {
+  	if ( (player.hp <= player.maxHp) && (player.gold >= 10) ) {
   		players[username].hp += 20;
   		players[username].gold -= 10;
   	};

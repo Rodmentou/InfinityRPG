@@ -3,7 +3,7 @@ var app = angular.module('infinityRPG', ['ngRoute', 'ngCookies']);
 
 app.controller('GameController', function ($scope, $http, $cookies) {
 	var cookieToken = $cookies.get('token');
-	//$scope.me = $cookies.get('user');
+	$scope.me = $cookies.get('user');
 
 	$scope.getHpBar = function (user) {
 		var percentage = (user.hp/user.maxHp)*100 + '%';
@@ -42,8 +42,17 @@ app.controller('GameController', function ($scope, $http, $cookies) {
 				$scope.getPlayers();
 			}, function (res) {
 				console.log('Error');
-
 			});
+	};
+
+	$scope.upgradeStat = function (stat) {
+		$http.post('/api/me/stats', { stat: stat},
+			{ headers: {'x-access-token': cookieToken } })
+			.then ( function (res) {
+				$scope.getMe(cookieToken);
+			}, function (res) {
+				console.log('Error upgrading stat.');
+			})
 	};
 
 
@@ -64,9 +73,10 @@ app.controller('GameController', function ($scope, $http, $cookies) {
 		$http.get('/api/users',
 			{ headers: {'x-access-token' : cookieToken } })
 			.then( function (res) {
+				console.log(res.data);
 				$scope.players = res.data;
 			}, function (res) {
-				console.log('Error');
+				console.log('Error fetching players.');
 		});
 	};
 
