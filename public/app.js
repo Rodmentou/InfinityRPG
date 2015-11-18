@@ -40,6 +40,7 @@ app.controller('GameController', function ($scope, $http, $cookies) {
 			.then ( function (res) {
 				console.log(res.data);
 				$scope.getPlayers();
+				$scope.getMe(cookieToken);
 			}, function (res) {
 				console.log('Error');
 			});

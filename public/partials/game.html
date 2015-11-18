@@ -1,5 +1,10 @@
 <nav class="navbar navbar-default navbar-fixed-top">
-	<b>{{me.username}}</b> {{me.hp | number: 0}}/{{me.maxHp}} Str: {{me.stats.str}} Int: {{me.stats.int}} Dex: {{me.stats.dex}}
+	<b>{{me.username}}</b> {{me.hp | number: 0}}/{{me.maxHp}}
+	   Str: {{me.stats.str}} Int: {{me.stats.int}} Dex: {{me.stats.dex}}<br>
+		 <button ng-click='upgradeStat("str")' class='glyphicon glyphicon-plus'>Str</button>
+		 <button ng-click='upgradeStat("int")' class='glyphicon glyphicon-plus'>Int</button>
+		 <button ng-click='upgradeStat("dex")' class='glyphicon glyphicon-plus'>Dex</button>
+		 <button ng-click='upgradeStat("str")' class='glyphicon glyphicon-heart danger'>Potion</button>
 </nav>
 
 <br><br><br>
@@ -9,9 +14,9 @@
 		<div class='span3 card'>
 			<b>{{player.username}}</b> Level {{getLvl(player)}}
 			<table class='table'>
-				<td>HP:{{player.hp | number: 0}}/{{player.maxHp | number: 0}}</td>
-				<td>Atk: {{player.atk}} </td>
-				<td>Def: {{player.def}} </td>
+				<td>HP: {{player.hp | number: 0}}/{{player.maxHp | number: 0}}</td>
+				<td>Str: {{player.stats.str}} </td>
+				<td>Int: {{player.stats.int}} </td>
 				<td>Gold: {{player.gold | number:0}} </td>
 				<td><button ng-click='attack(player)' class="btn glyphicon glyphicon-screenshot">Attack</button></td>
 
@@ -23,7 +28,3 @@
 		</div>
 	</div>
 </div>
-<div> <button ng-click='useItem("redPotion")' class='btn btn-primary'>Use potion	</button> </div>
-<button ng-click='upgradeStat("str")' class='btn btn-danger'>+STR </button>
-<button ng-click='upgradeStat("int")' class='btn btn-danger'>+INT </button>
-<button ng-click='upgradeStat("dex")' class='btn btn-danger'>+DEX </button>
