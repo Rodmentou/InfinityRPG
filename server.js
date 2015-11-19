@@ -3,16 +3,20 @@ var express = require('express'),
 	morgan = require('morgan'),
 	bodyParser = require('body-parser'),
 	CronJob = require('cron').CronJob,
-	forky = require('forky');
+	forky = require('forky'),
+	mongoose = require('mongoose');
 
 
-var port = process.env.PORT || 8080;
-var env = process.env.NODE_ENV || 'dev';
+app.DB_URL = process.env.DB_URL || 'mongodb://localhost/test';
+app.PORT = process.env.PORT || 8080;
+app.ENV = process.env.NODE_ENV || 'dev';
+
+mongoose.connect(app.DB_URL);
 
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-app.use(morgan(env));
+app.use(morgan(app.ENV));
 app.use(express.static(__dirname + '/public'));
 
 app.all('*', function(req, res, next) {
@@ -27,7 +31,7 @@ var players = {};
 
 var api = express.Router();
 require('./routes/signup')(api, players);
-//ONLY AUTHENTICATED USERS BEYOND THIS POINT.
+//ONLY AUTHENTICATED USERS BEYOND TFHIS POINT.
 require('./routes/middlewares')(api);
 require('./routes/items')(api, players);
 require('./routes/1x1')(api, players);
@@ -52,7 +56,6 @@ new CronJob('*/10 * * * * *', function() {
 
 
 
-
-app.listen(port, function () {
-	console.log('Server running in ' + env + ' at ' + port + '.');
+app.listen(app.PORT, function () {
+	console.log('Server running in ' + app.ENV + ' at ' + app.PORT + '.');
 });

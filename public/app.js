@@ -1,7 +1,7 @@
 var app = angular.module('infinityRPG', ['ngRoute', 'ngCookies']);
 
 
-app.controller('GameController', function ($scope, $http, $cookies) {
+app.controller('GameController', function ($scope, $http, $cookies, $location) {
 	var cookieToken = $cookies.get('token');
 	$scope.me = $cookies.get('user');
 
@@ -38,7 +38,6 @@ app.controller('GameController', function ($scope, $http, $cookies) {
 		$http.post('/api/1x1', user,
 			{ headers: {'x-access-token' : cookieToken } })
 			.then ( function (res) {
-				console.log(res.data);
 				$scope.getPlayers();
 				$scope.getMe(cookieToken);
 			}, function (res) {
@@ -58,10 +57,13 @@ app.controller('GameController', function ($scope, $http, $cookies) {
 
 
 	$scope.getMe = function(cookieToken) {
+		console.log(cookieToken);
 		$http.get('/api/me',
 			{ headers: {'x-access-token' : cookieToken } })
 			.then ( function (res) {
 				$scope.me = res.data;
+				console.log($scope.me);
+				if (!$scope.me) $location.path('/');
 			}, function (res) {
 				console.log('Error fetching data.');
 			});
@@ -74,7 +76,6 @@ app.controller('GameController', function ($scope, $http, $cookies) {
 		$http.get('/api/users',
 			{ headers: {'x-access-token' : cookieToken } })
 			.then( function (res) {
-				console.log(res.data);
 				$scope.players = res.data;
 			}, function (res) {
 				console.log('Error fetching players.');
@@ -88,20 +89,19 @@ app.controller('GameController', function ($scope, $http, $cookies) {
 
 });
 
-app.controller('FooterController', function ($scope) {
-
-});
 
 app.controller('LoginController', function ($scope, $http, $location, $cookies) {
 
 	$scope.signup = function (user) {
+		user.password = 123;
 		$http.post('/api/signup', user)
 			.then( function (res) {
+				console.log(res.data);
 				$cookies.put('token', res.data.token);
 				window.localStorage.setItem('user', JSON.stringify(res.data.user));
 				$location.path('/play');
 			}, function (res) {
-
+				console.log('Error on signup');
 			});
 	};
 
