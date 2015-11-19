@@ -29,6 +29,7 @@
     "express": "4.13.3",
     "forky": "0.3.0",
     "jsonwebtoken": "5.4.1",
+    "mongoose": "4.2.6",
     "morgan": "1.6.1"
   }
 }
