@@ -1,10 +1,11 @@
 <nav class="navbar navbar-default navbar-fixed-top">
 	<b>{{me.username}}</b> {{me.hp | number: 0}}/{{me.maxHp}}
 	   Str: {{me.stats.str}} Int: {{me.stats.int}} Dex: {{me.stats.dex}}<br>
-		 <button ng-click='upgradeStat("str")' class='glyphicon glyphicon-plus'>Str</button>
-		 <button ng-click='upgradeStat("int")' class='glyphicon glyphicon-plus'>Int</button>
-		 <button ng-click='upgradeStat("dex")' class='glyphicon glyphicon-plus'>Dex</button>
-		 <button ng-click='useItem("redPotion")' class='glyphicon glyphicon-heart danger'>Potion</button>
+		 <button ng-click='upgradeStat("str")' class='btn glyphicon glyphicon-plus'>Str</button>
+		 <button ng-click='upgradeStat("int")' class='btn glyphicon glyphicon-plus'>Int</button>
+		 <button ng-click='upgradeStat("dex")' class='btn glyphicon glyphicon-plus'>Dex</button>
+		 <button ng-click='useItem("redPotion")' class='btn glyphicon glyphicon-heart'>Potion</button>
+		 <button ng-click='useItem("godPotion")' class='btn glyphicon glyphicon glyphicon-flash'>God Mode</button>
 </nav>
 
 <br><br><br>

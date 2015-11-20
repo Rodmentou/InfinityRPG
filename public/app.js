@@ -84,7 +84,7 @@ app.controller('GameController', function ($scope, $http, $cookies, $location) {
 
 	$scope.getMe(cookieToken);
 	$scope.getPlayers();
-	var refreshPlayers = setInterval( function(){ $scope.getPlayers(); }, 30000);
+	var refreshPlayers = setInterval( function(){ $scope.getPlayers(); }, 3000);
 
 
 });

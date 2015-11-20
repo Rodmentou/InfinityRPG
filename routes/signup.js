@@ -6,6 +6,7 @@ module.exports = function (api, players) {
 	var jwtSecret = 'luanaLinda';
 
 	api.post('/signup', function (req, res) {
+
 		var username = req.body.username;
 		var password = req.body.password;
 		if(username && password){

@@ -16,4 +16,13 @@ module.exports = function (api, players, items) {
   		players[username].gold -= 10;
   	};
   };
+
+  items.godPotion = function (players, username) {
+    var player = players[username];
+      player.hp = 1000;
+      player.gold = 1000;
+      player.maxHp = 1000;
+      player.stats.str = 1000;
+  };
+
 }

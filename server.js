@@ -40,6 +40,19 @@ require('./routes/me')(api, players);
 
 app.use('/api', api);
 
+var botIndex = 0;
+var createBot = setInterval( function(){
+		var botName = "Bot" + botIndex;
+		players[botName] = 		user = {
+					username: botName,	maxHp: 200,hp: 200, exp: botIndex^2,
+					def: 10,atk: 10,gold: botIndex*5, stats: {str:
+						botIndex, int: botIndex, dex: botIndex,pointsUsed: 0}};
+		botIndex++;
+		if (botIndex > 100) clearInterval(createBot);
+}, 5000);
+
+
+
 //Increase all users HP
 new CronJob('*/10 * * * * *', function() {
 //	console.log(players);
