@@ -42,14 +42,22 @@ app.use('/api', api);
 
 var botIndex = 0;
 var createBot = setInterval( function(){
-		var botName = "Bot" + botIndex;
-		players[botName] = 		user = {
-					username: botName,	maxHp: 200,hp: 200, exp: botIndex^2,
-					def: 10,atk: 10,gold: botIndex*5, stats: {str:
-						botIndex, int: botIndex, dex: botIndex,pointsUsed: 0}};
+	var botName = "Bot" + botIndex;
+	if (!players[botName]) {
+		players[botName] = {
+				username: botName,	maxHp: 200,hp: 200, exp: botIndex^2,
+				def: 10,atk: 10,gold: botIndex*5, stats: {str:
+					botIndex, int: botIndex, dex: botIndex,pointsUsed: 0}};
+	} else {
+		var stats = players[botName].stats;
+		stats.str += 1;
+		stats.int += 1;
+		stats.dex += 1;
+	};
 		botIndex++;
-		if (botIndex > 100) clearInterval(createBot);
-}, 5000);
+
+		if (botIndex >= 100) botIndex = 0;
+}, 6000);
 
 
 
