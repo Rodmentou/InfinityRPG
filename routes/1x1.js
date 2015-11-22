@@ -57,7 +57,8 @@ module.exports = function (api, players) {
 							delete players[attackerName];
 						};
 
-							(attacker) ? res.json(attacker) : res.json({message: 'You are dead.'});
+							(attacker) ? res.json({attacker:attacker, defender: defender})
+												 : res.json({message: 'You are dead.'});
 
 					} else {
 						res.json({ success: false, message: 'Cant attack nothing.' });

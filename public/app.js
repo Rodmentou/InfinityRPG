@@ -38,8 +38,21 @@ app.controller('GameController', function ($scope, $http, $cookies, $location) {
 		$http.post('/api/1x1', user,
 			{ headers: {'x-access-token' : cookieToken } })
 			.then ( function (res) {
-				$scope.getPlayers();
-				$scope.getMe(cookieToken);
+				if (res.data.attacker) {
+					var attackerName = res.data.attacker.username;
+					var defenderName = res.data.defender.username;
+
+					$scope.me = res.data.attacker;
+					$scope.players[attackerName] = res.data.attacker;
+					($scope.players[defenderName].hp < 0)
+						?	delete $scope.players[defenderName]
+						: $scope.players[defenderName] = res.data.defender;
+				} else {
+
+					$location.path('/');
+
+				}
+
 			}, function (res) {
 				console.log('Error');
 			});
