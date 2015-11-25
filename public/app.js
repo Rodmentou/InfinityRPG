@@ -47,7 +47,8 @@ app.controller('GameController', function ($scope, $http, $cookies, $location) {
 					($scope.players[defenderName].hp < 0)
 						?	delete $scope.players[defenderName]
 						: $scope.players[defenderName] = res.data.defender;
-				} else {
+				} else { //ATTACKER DIED
+					console.log(res.data);
 
 					$location.path('/');
 
@@ -70,12 +71,10 @@ app.controller('GameController', function ($scope, $http, $cookies, $location) {
 
 
 	$scope.getMe = function(cookieToken) {
-		console.log(cookieToken);
 		$http.get('/api/me',
 			{ headers: {'x-access-token' : cookieToken } })
 			.then ( function (res) {
 				$scope.me = res.data;
-				console.log($scope.me);
 				if (!$scope.me) $location.path('/');
 			}, function (res) {
 				console.log('Error fetching data.');
@@ -97,7 +96,7 @@ app.controller('GameController', function ($scope, $http, $cookies, $location) {
 
 	$scope.getMe(cookieToken);
 	$scope.getPlayers();
-	var refreshPlayers = setInterval( function(){ $scope.getPlayers(); }, 3000);
+	var refreshPlayers = setInterval( function(){ $scope.getPlayers(); }, 30000);
 
 
 });
@@ -106,7 +105,6 @@ app.controller('GameController', function ($scope, $http, $cookies, $location) {
 app.controller('LoginController', function ($scope, $http, $location, $cookies) {
 
 	$scope.signup = function (user) {
-		user.password = 123;
 		$http.post('/api/signup', user)
 			.then( function (res) {
 				console.log(res.data);

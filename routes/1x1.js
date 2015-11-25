@@ -6,6 +6,7 @@ module.exports = function (api, players) {
 			var defenderName = req.body.username;
 
 			if (attackerName != defenderName) { //Are you the same person?
+				console.log(attackerName != defenderName);
 				if ( (players[attackerName]) && (players[defenderName]) ) {
 
 						var attacker = players[attackerName];
@@ -58,7 +59,7 @@ module.exports = function (api, players) {
 						};
 
 							(attacker) ? res.json({attacker:attacker, defender: defender})
-												 : res.json({message: 'You are dead.'});
+												 : res.json({success: true, message: 'You are dead.'});
 
 					} else {
 						res.json({ success: false, message: 'Cant attack nothing.' });

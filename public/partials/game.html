@@ -10,7 +10,7 @@
 
 <br><br><br>
 
-<div class='container' ng-repeat='player in players'>
+<div class='container' ng-repeat='player in players | orderBy:username'>
 	<div class='row cardContainer'>
 		<div class='span3 card'>
 			<b>{{player.username}}</b> Level {{getLvl(player)}}
