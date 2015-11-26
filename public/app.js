@@ -35,28 +35,38 @@ app.controller('GameController', function ($scope, $http, $cookies, $location) {
 	};
 
 	$scope.attack = function (user) {
-		$http.post('/api/1x1', user,
-			{ headers: {'x-access-token' : cookieToken } })
-			.then ( function (res) {
-				if (res.data.attacker) {
-					var attackerName = res.data.attacker.username;
-					var defenderName = res.data.defender.username;
+		var defender = {};
+		defender.username = user.username;
 
-					$scope.me = res.data.attacker;
-					$scope.players[attackerName] = res.data.attacker;
-					($scope.players[defenderName].hp < 0)
-						?	delete $scope.players[defenderName]
-						: $scope.players[defenderName] = res.data.defender;
-				} else { //ATTACKER DIED
-					console.log(res.data);
+		if (defender.username != $scope.me.username) {
+			$http.post('/api/1x1', defender,
+				{ headers: {'x-access-token' : cookieToken } })
+				.then ( function (res) {
+					if (res.data.attacker) {
+						var attackerName = res.data.attacker.username;
+						var defenderName = res.data.defender.username;
 
-					$location.path('/');
+						$scope.me = res.data.attacker;
+						$scope.players[attackerName] = res.data.attacker;
+						(res.data.defender.hp < 0)
+							?	delete $scope.players[defenderName]
+							: $scope.players[defenderName] = res.data.defender;
+					} else { //ATTACKER DIED
+						console.log(res.data);
 
-				}
+						$location.path('/');
 
-			}, function (res) {
-				console.log('Error');
-			});
+					}
+
+				}, function (res) {
+					console.log('Error');
+				});
+
+		} else { //ATTACKING SELF
+			console.log("Can't attack yourself!");
+		}
+
+
 	};
 
 	$scope.upgradeStat = function (stat) {
@@ -107,7 +117,6 @@ app.controller('LoginController', function ($scope, $http, $location, $cookies) 
 	$scope.signup = function (user) {
 		$http.post('/api/signup', user)
 			.then( function (res) {
-				console.log(res.data);
 				$cookies.put('token', res.data.token);
 				window.localStorage.setItem('user', JSON.stringify(res.data.user));
 				$location.path('/play');

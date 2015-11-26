@@ -14,37 +14,14 @@ module.exports = function (api, players) {
 			var userModel = new UserModel(req.body);
 
 
-			UserModel.find(
-			{ username: username, password: password},
-			findUser ).then( function () {
-				if (!players[username]) { //If player not in memory, create it.
-					console.log('Username not in use');
+			var someFunc = function () {
+				return UserModel.find(
+				{ username: username, password: password},
+				findUser );
+			};
 
-					var token = createNewToken(username, jwtSecret);
-					var user = createNewPlayer(username);
+			someFunc().then(findUserResolve(players, username, res), findUserReject);
 
-					players[username] = user;
-					res.json({user: user, token: token});
-
-
-				} else { //If there is a player in memory.
-					console.log('Username in use');
-					if (logged) { //Give player back to owner.
-						console.log('Username in use, but owner logging.');
-						var token = createNewToken(username, jwtSecret);
-						var user = players[username];
-						res.json({user: user, token: token});
-					} else { //Something wrong here.
-						res.json({success: false, message: 'Username in use.'});
-					}
-				};
-			}, function () {
-				userModel.save( function (err) {
-					if (!err) {
-						console.log('User created');
-					}
-				});
-			});
 
 
 		} else {
@@ -52,16 +29,50 @@ module.exports = function (api, players) {
 		};
 	});
 
-	var findUser = function (err, data) {
-		var logged = false;
-		var userSearched = Q.defer();
-		if (data.length) {
-			logged = true;
-			userSearched.resolve();
-		} else {
-			userSearched.reject();
-		}
+	var findUserResolve = function (players, username, res) {
+		console.log(username);
+		if (!players[username]) { //If player not in memory, create it.
+			console.log('Username not in use');
 
+			var token = createNewToken(username, jwtSecret);
+			var user = createNewPlayer(username);
+
+			players[username] = user;
+			res.json({user: user, token: token});
+
+
+		} else { //If there is a player in memory.
+			console.log('Username in use');
+			var logged = true;
+			if (logged) { //Give player back to owner.
+				console.log('Username in use, but owner logging.');
+				var token = createNewToken(username, jwtSecret);
+				var user = players[username];
+				res.json({user: user, token: token});
+			} else { //Something wrong here.
+				res.json({success: false, message: 'Username in use.'});
+			}
+		};
+	};
+
+	var findUserReject = function () {
+			userModel.save( function (err) {
+				if (!err) {
+					console.log('User created');
+				}
+			});
+	};
+
+	var findUser = function (err, data) {
+		var userSearched = Q.defer();
+		console.log(data);
+		if (data.length) {
+			console.log('User found');
+			userSearched.resolve(true);
+		} else {
+			userSearched.reject(false);
+		}
+		console.log(userSearched.promise);
 		return userSearched.promise;
 	};
 
