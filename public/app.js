@@ -11,7 +11,9 @@ app.controller('GameController', function ($scope, $http, $cookies, $location) {
 	};
 
 	$scope.getLvl = function (user) {
-		return parseInt(Math.sqrt(user.exp));
+		if (user) {
+				return parseInt(Math.sqrt(user.exp));
+		}
 	};
 
 	$scope.getBarClass = function (user) {
