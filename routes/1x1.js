@@ -6,7 +6,6 @@ module.exports = function (api, players) {
 			var defenderName = req.body.username;
 
 			if (attackerName != defenderName) { //Are you the same person?
-				console.log(attackerName != defenderName);
 				if ( (players[attackerName]) && (players[defenderName]) ) {
 
 						var attacker = players[attackerName];

@@ -13,56 +13,39 @@ module.exports = function (api, players) {
 		if(username && password){
 			var userModel = new UserModel(req.body);
 
+      if (!players[username]) {
+        userModel.save( function (err) {
+          if (!err) {
+            console.log('User created');
+          }
+        });
+        var token = createNewToken(username, jwtSecret);
+  			var user = createNewPlayer(username);
 
+  			players[username] = user;
 
+  			res.json({user: user, token: token});
 
-
-			UserModel.find(
-				{ username: username, password: password},
-				findUser ).then(
-					findUserResolve(players, username, res),
-					findUserReject(userModel));
-
-
+      } else {
+        var logged = UserModel.find(
+          { username: username, password: password}, findUser );
+          //console.log(findUser;
+          if (logged) { //Give player back to owner.
+            console.log('Username in use, but owner logging.');
+            var token = createNewToken(username, jwtSecret);
+            var user = players[username];
+            res.json({user: user, token: token});
+          } else { //Something wrong here.
+            res.json({success: false, message: 'Username in use.'});
+          }
+      }
 
 		} else {
 			res.json({success: false, message: 'Need to send both username and password.'});
 		};
 	});
 
-	var findUserResolve = function (players, username, res) {
-		console.log(username);
-		if (!players[username]) { //If player not in memory, create it.
-			console.log('Username not in use');
 
-			var token = createNewToken(username, jwtSecret);
-			var user = createNewPlayer(username);
-
-			players[username] = user;
-			res.json({user: user, token: token});
-
-
-		} else { //If there is a player in memory.
-			console.log('Username in use');
-			var logged = true;
-			if (logged) { //Give player back to owner.
-				console.log('Username in use, but owner logging.');
-				var token = createNewToken(username, jwtSecret);
-				var user = players[username];
-				res.json({user: user, token: token});
-			} else { //Something wrong here.
-				res.json({success: false, message: 'Username in use.'});
-			}
-		};
-	};
-
-	var findUserReject = function () {
-			userModel.save( function (err) {
-				if (!err) {
-					console.log('User created');
-				}
-			});
-	};
 
 	var findUser = function (err, data) {
 		if (data.length) {
