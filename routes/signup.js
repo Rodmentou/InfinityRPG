@@ -6,32 +6,23 @@ module.exports = function (api, players) {
 	var jwtSecret = 'luanaLinda';
 
 	api.post('/signup', function (req, res) {
-		console.log('Entering signup');
 
 		var username = req.body.username;
 		var password = req.body.password;
 
 		if(username && password){
-			console.log('Username and password presente');
-
-
 			UserModel.find(req.body)
-			.then(findUser, createUser)
-			.then(function(data) { userFound(data, res)}, findUserErr);
-
-
-
+			.then(findUser, findUserErr)
+			.then(function(data) { userFound(data, res)},
+						function(data) { createUser(data, req, res); });
 		} else {
 			res.json({success: false, message: 'Need to send both username and password.'});
 		};
 	});
 
 
-
-
 	var userFound = function (data, res) {
-		console.log('On user found');
-		var username = data[0].username;
+		var username = data.username;
 		var jwtSecret = 'luanaLinda';
 		var token = createNewToken(username, jwtSecret);
 
@@ -39,35 +30,32 @@ module.exports = function (api, players) {
 			var user = players[username];
 			res.json({user: user, token: token});
 
-
 		} else { //PLAYER NOT IN MEMORY. CREATE IT AND SEND!
 			var user = createNewPlayer(username);
 			players[username] = user;
-
 			res.json({user: user, token: token});
 		}
 
 	};
 
-	var createUser = function (err) {
-		console.log(req.body);
-		console.log(err);
-		console.log('createUser');
-		var userModel = new UserModel(req.body);
-		console.log(req.body);
-		userModel.save ( function (err) {
-			if (err) console.log(err);
-		});
+	var findUserErr = function (err) {
 		console.log('Rejected on find');
 	};
 
-	var findUserErr = function (err) {
-		res.json({success: false, message: 'Fuck it'});
-	};
+	var createUser = function (err, req, res) {
+		var userModel = new UserModel(req.body);
+		userModel.save ( function (err, data) {
+			if (!err) {
+				userFound(data, res);
+			} else {
+				res.json({success: false, message: 'User already exist!'});
+			}
+		});
+	}
 
 	var findUser = function(data) {
 			if (data.length) {
-				return data;
+				return data[0];
 			} else {
 				var reason = 'Rejected on findUser';
 				throw reason;

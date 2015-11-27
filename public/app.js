@@ -119,9 +119,16 @@ app.controller('LoginController', function ($scope, $http, $location, $cookies) 
 	$scope.signup = function (user) {
 		$http.post('/api/signup', user)
 			.then( function (res) {
-				$cookies.put('token', res.data.token);
-				window.localStorage.setItem('user', JSON.stringify(res.data.user));
-				$location.path('/play');
+				if (res.data.token) {
+					$cookies.put('token', res.data.token);
+					window.localStorage.setItem('user', JSON.stringify(res.data.user));
+					$location.path('/play');
+				} else {
+					delete $scope.user.username;
+					delete $scope.user.password;
+					$scope.error = 'Error on login';
+				}
+
 			}, function (res) {
 				console.log('Error on signup');
 			});
