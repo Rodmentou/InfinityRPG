@@ -1,27 +1,23 @@
 var	mongoose = require('mongoose');
 var UserModel = require('../models/user');
-Q = require('q');
 
 module.exports = function (api, players) {
 	var jwt = require('jsonwebtoken');
 	var jwtSecret = 'luanaLinda';
 
 	api.post('/signup', function (req, res) {
+		console.log('Entering signup');
 
 		var username = req.body.username;
 		var password = req.body.password;
+
 		if(username && password){
-			var userModel = new UserModel(req.body);
+			console.log('Username and password presente');
 
 
-
-
-
-			UserModel.find(
-				{ username: username, password: password},
-				findUser ).then(
-					findUserResolve(players, username, res),
-					findUserReject(userModel));
+			UserModel.find(req.body)
+			.then(findUser, createUser)
+			.then(function(data) { userFound(data, res)}, findUserErr);
 
 
 
@@ -30,46 +26,52 @@ module.exports = function (api, players) {
 		};
 	});
 
-	var findUserResolve = function (players, username, res) {
-		console.log(username);
-		if (!players[username]) { //If player not in memory, create it.
-			console.log('Username not in use');
 
-			var token = createNewToken(username, jwtSecret);
-			var user = createNewPlayer(username);
 
-			players[username] = user;
+
+	var userFound = function (data, res) {
+		console.log('On user found');
+		var username = data[0].username;
+		var jwtSecret = 'luanaLinda';
+		var token = createNewToken(username, jwtSecret);
+
+		if (players[username]) { //PLAYER LOGGED. GIVE IT BACK!
+			var user = players[username];
 			res.json({user: user, token: token});
 
 
-		} else { //If there is a player in memory.
-			console.log('Username in use');
-			var logged = true;
-			if (logged) { //Give player back to owner.
-				console.log('Username in use, but owner logging.');
-				var token = createNewToken(username, jwtSecret);
-				var user = players[username];
-				res.json({user: user, token: token});
-			} else { //Something wrong here.
-				res.json({success: false, message: 'Username in use.'});
-			}
-		};
-	};
+		} else { //PLAYER NOT IN MEMORY. CREATE IT AND SEND!
+			var user = createNewPlayer(username);
+			players[username] = user;
 
-	var findUserReject = function () {
-			userModel.save( function (err) {
-				if (!err) {
-					console.log('User created');
-				}
-			});
-	};
-
-	var findUser = function (err, data) {
-		if (data.length) {
-			return true;
-		} else {
-			return false;
+			res.json({user: user, token: token});
 		}
+
+	};
+
+	var createUser = function (err) {
+		console.log(req.body);
+		console.log(err);
+		console.log('createUser');
+		var userModel = new UserModel(req.body);
+		console.log(req.body);
+		userModel.save ( function (err) {
+			if (err) console.log(err);
+		});
+		console.log('Rejected on find');
+	};
+
+	var findUserErr = function (err) {
+		res.json({success: false, message: 'Fuck it'});
+	};
+
+	var findUser = function(data) {
+			if (data.length) {
+				return data;
+			} else {
+				var reason = 'Rejected on findUser';
+				throw reason;
+			}
 	};
 
 	var createNewPlayer = function(playerName) {

@@ -31,7 +31,7 @@ var players = {};
 
 
 var api = express.Router();
-require('./routes/signup2')(api, players);
+require('./routes/signup')(api, players);
 //ONLY AUTHENTICATED USERS BEYOND TFHIS POINT.
 require('./routes/middlewares')(api);
 require('./routes/items')(api, players);
@@ -45,9 +45,6 @@ app.use('/api', api);
 require('./createBots')(players);
 require('./addGold')(players);
 require('./addHp')(players);
-
-
-
 
 
 app.listen(app.PORT, function () {
