@@ -1,4 +1,4 @@
-<div class="jumbotron form form-control"
+<form ng-submit='signup(user)' class="jumbotron form form-control"
 style='		width: 400px;
 			text-align: center;
 			margin-top: 80px;
@@ -8,4 +8,4 @@ style='		width: 400px;
 	<input class='form-control' type='password' ng-model='user.password' placeholder='Password'>
 	<button ng-click='signup(user)' class='btn btn-info'>Play!</button>
 	<div ng-if='error'>{{error}}</div>
-</div>
+</form>
