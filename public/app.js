@@ -30,7 +30,7 @@ app.controller('GameController', function ($scope, $http, $cookies, $location) {
 		$http.get('/api/items/use/' + itemName,
 			{ headers: { 'x-access-token' : cookieToken } })
 			.then( function (res) {
-				$scope.getPlayers();
+				$scope.me = res.data.player;
 			}, function (res) {
 				console.log('Error on using item');
 			});
@@ -71,6 +71,7 @@ app.controller('GameController', function ($scope, $http, $cookies, $location) {
 					});
 
 			} else { //ATTACKING SELF
+				$scope.attacking = false;
 				console.log("Can't attack yourself!");
 			}
 		}
@@ -80,7 +81,7 @@ app.controller('GameController', function ($scope, $http, $cookies, $location) {
 		$http.post('/api/me/stats', { stat: stat},
 			{ headers: {'x-access-token': cookieToken } })
 			.then ( function (res) {
-				$scope.getMe(cookieToken);
+				$scope.me = res.data.player;
 			}, function (res) {
 				console.log('Error upgrading stat.');
 			})

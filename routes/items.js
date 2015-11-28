@@ -2,9 +2,18 @@ module.exports = function (api, players, items) {
   api.route('/items/use/:id')
     .get( function (req, res) {
       var item = req.params.id;
-        items[item](players, req.decoded.username);
+        res.json(items[item](players, req.decoded.username));
+    })
 
-      res.json({success: true, message: 'Wellcome!'});
+
+    .post ( function (req, res) {
+      var item = req.params.id;
+      items[item](players, req.decoded.username)
+      .then( function(result) {
+        res.json(result);
+      });
+
+
     });
 
 
@@ -14,7 +23,9 @@ module.exports = function (api, players, items) {
   	if ( (player.hp < player.maxHp) && (player.gold >= 10) ) {
   		players[username].hp += 20;
   		players[username].gold -= 10;
+      (player.hp > player.maxHp) ? player.hp = player.maxHp : undefined;
   	};
+    return({player: players[username]});
   };
 
   items.godPotion = function (players, username) {

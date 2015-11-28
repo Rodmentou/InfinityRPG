@@ -13,7 +13,7 @@ module.exports = function (api, players) {
       player.stats.pointsUsed ++;
       if (stat == 'str') player.maxHp += 5;
       player.stats[stat] += 1;
-      res.json({success: true, message: "Stat " + stat + " upgraded."});
+      res.json({player: player, success: true, message: "Stat " + stat + " upgraded."});
     } else {
       res.json({success: false, message: "Not enought points."});
     };
