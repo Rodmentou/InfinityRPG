@@ -37,38 +37,43 @@ app.controller('GameController', function ($scope, $http, $cookies, $location) {
 	};
 
 	$scope.attack = function (user) {
-		var defender = {};
-		defender.username = user.username;
+		if ($scope.attacking) {
+			$scope.error = 'Wait!';
+		} else {
+			$scope.attacking = true;
+			var defender = {};
+			defender.username = user.username;
 
-		if (defender.username != $scope.me.username) {
-			$http.post('/api/1x1', defender,
-				{ headers: {'x-access-token' : cookieToken } })
-				.then ( function (res) {
-					if (res.data.attacker) {
-						var attackerName = res.data.attacker.username;
-						var defenderName = res.data.defender.username;
+			if (defender.username != $scope.me.username) {
+				$http.post('/api/1x1', defender,
+					{ headers: {'x-access-token' : cookieToken } })
+					.then ( function (res) {
+						$scope.attacking = false;
+						if (res.data.attacker) {
+							var attackerName = res.data.attacker.username;
+							var defenderName = res.data.defender.username;
 
-						$scope.me = res.data.attacker;
-						$scope.players[attackerName] = res.data.attacker;
-						(res.data.defender.hp < 0)
-							?	delete $scope.players[defenderName]
-							: $scope.players[defenderName] = res.data.defender;
-					} else { //ATTACKER DIED
-						console.log(res.data);
+							$scope.me = res.data.attacker;
+							$scope.players[attackerName] = res.data.attacker;
+							(res.data.defender.hp < 0)
+								?	delete $scope.players[defenderName]
+								: $scope.players[defenderName] = res.data.defender;
+						} else { //ATTACKER DIED
+							console.log(res.data);
 
-						$location.path('/');
+							$location.path('/');
 
-					}
+						}
 
-				}, function (res) {
-					console.log('Error');
-				});
+					}, function (res) { //ERROR RESPONSE
+						$scope.attacking = false;
+						console.log('Error on attack.');
+					});
 
-		} else { //ATTACKING SELF
-			console.log("Can't attack yourself!");
+			} else { //ATTACKING SELF
+				console.log("Can't attack yourself!");
+			}
 		}
-
-
 	};
 
 	$scope.upgradeStat = function (stat) {
