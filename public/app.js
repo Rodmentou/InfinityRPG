@@ -38,7 +38,9 @@ app.controller('GameController', function ($scope, $http, $cookies, $location) {
 		$http.get('/api/items/use/' + itemName,
 			{ headers: { 'x-access-token' : cookieToken } })
 			.then( function (res) {
-				$scope.me = res.data.player;
+				var player = res.data.player;
+				$scope.me = player;
+				$scope.players[player.username] = player;
 			}, function (res) {
 				console.log('Error on using item');
 			});
