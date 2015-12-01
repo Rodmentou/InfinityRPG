@@ -51,7 +51,6 @@ module.exports = function (api, players) {
 								defender.exp += attackerLvl;
 								defender.gold += attacker.gold;
 							}
-							console.log('Pode entrar?');
 							updateMaxLevel(attacker, attackerLvl);
 							delete players[attackerName];
 						};
@@ -69,11 +68,8 @@ module.exports = function (api, players) {
 		});
 
 		var updateMaxLevel = function (player, maxLevel) {
-			console.log('Entrou foi nada');
 			if (!player.isBot) {
-				console.log('Só a cabeçinha');
 				if (player.maxLevel < maxLevel) {
-					console.log('Entrou tudo');
 					var username = player.username;
 					UserModel.update({ username: username},
 													{maxLevel: maxLevel},

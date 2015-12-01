@@ -48,6 +48,7 @@ app.controller('GameController', function ($scope, $http, $cookies, $location) {
 
 	$scope.attack = function (user) {
 		if ($scope.attacking) {
+			console.log('Attacking');
 			$scope.error = 'Wait!';
 		} else {
 			$scope.attacking = true;
@@ -88,7 +89,7 @@ app.controller('GameController', function ($scope, $http, $cookies, $location) {
 	};
 
 	$scope.upgradeStat = function (stat) {
-		$http.post('/api/me/stats', { stat: stat},
+		$http.post('/api/me/stats', { stat: stat, amount: 10},
 			{ headers: {'x-access-token': cookieToken } })
 			.then ( function (res) {
 				if (res.data.player) $scope.me = res.data.player;

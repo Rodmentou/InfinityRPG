@@ -9,17 +9,30 @@ module.exports = function (api, players) {
 
   api.post('/me/stats', function (req, res) {
     var stat = req.body.stat;
+    var amount = req.body.amount;
+    if (!amount) amount = 1;
+
     var player = players[req.decoded.username];
+    var playerLevel = Math.round(Math.sqrt(player.exp));
+    var startingPoints = 5;
 
-    if ( player.stats.pointsUsed < Math.sqrt(player.exp) + 5) {
-      player.stats.pointsUsed ++;
-      if (stat == 'str') player.maxHp += 15;
-      player.stats[stat] += 1;
-      res.json({player: player, success: true, message: "Stat " + stat + " upgraded."});
-    } else {
-      res.json({player: player, success: false, message: "Not enought points."});
+    var pointsUsed = player.stats.pointsUsed;
+    var pointsReceived =  playerLevel + startingPoints;
+    console.log('Points Used:' + pointsUsed);
+    console.log('Points received:' + pointsReceived);
+    console.log('Coiso: ' + (pointsReceived - pointsUsed));
+
+    if ( pointsUsed < pointsReceived) {
+      var pointsFree = pointsReceived - pointsUsed;
+      if (amount > pointsFree) amount = pointsFree;
+
+      player.stats.pointsUsed += amount;
+      if (stat == 'str') player.maxHp += 15 * amount;
+      player.stats[stat] += amount;
+      res.json({player: player, success: true, message: stat + "+ " + amount});
+      } else {
+        res.json({player: player, success: false, message: "Not enought points."});
     };
-
   });
 
 }
