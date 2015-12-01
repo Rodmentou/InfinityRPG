@@ -7,7 +7,7 @@ module.exports = function (players, interval) {
   	var botName = "_Bot " + botNumber;
   	if (!players[botName]) {
   		players[botName] = {
-  				username: botName,	maxHp: 200,hp: 200, exp: Math.pow(botIndex, 2),
+  				username: botName, isBot: true, maxHp: 200,hp: 200, exp: Math.pow(botIndex, 2),
   				def: 10,atk: 10,gold: botIndex*5, stats: {str:
   					botIndex, int: botIndex, dex: botIndex,pointsUsed: 0}};
   	} else {

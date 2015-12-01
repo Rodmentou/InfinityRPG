@@ -5,7 +5,7 @@ module.exports = function (api, players) {
   require('./middlewares')(api);
   require('./items')(api, players);
   require('./1x1')(api, players);
-  require('./users')(api, players);
+  require('./players')(api, players);
   require('./me')(api, players);
 
 }

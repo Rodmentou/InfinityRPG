@@ -111,7 +111,7 @@ app.controller('GameController', function ($scope, $http, $cookies, $location) {
 
 
 	$scope.getPlayers = function() {
-		$http.get('/api/users',
+		$http.get('/api/players',
 			{ headers: {'x-access-token' : cookieToken } })
 			.then( function (res) {
 				$scope.players = res.data;

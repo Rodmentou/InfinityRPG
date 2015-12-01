@@ -31,8 +31,8 @@ module.exports = function (api, players) {
 			res.json({user: player, token: token});
 
 		} else { //PLAYER NOT IN MEMORY. CREATE IT AND SEND!
-			console.log(data);
-			var player = createNewPlayer(username, data.maxLevel);
+			var bonusStats = Math.round(data.maxLevel/10);
+			var player = createNewPlayer(username, bonusStats);
 			players[username] = player;
 			res.json({user: player, token: token});
 		}
