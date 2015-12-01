@@ -2,10 +2,8 @@ var express = require('express'),
 	app = express(),
 	morgan = require('morgan'),
 	bodyParser = require('body-parser'),
-	CronJob = require('cron').CronJob,
 	forky = require('forky'),
-	mongoose = require('mongoose'),
-	Q = require('q');
+	mongoose = require('mongoose');
 
 
 app.DB_URL = process.env.DB_URL || 'mongodb://localhost/test';
