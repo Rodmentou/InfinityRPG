@@ -60,7 +60,7 @@ app.controller('GameController', function ($scope, $http, $cookies, $location) {
 					{ headers: {'x-access-token' : cookieToken } })
 					.then ( function (res) {
 						$scope.attacking = false;
-						if (res.data.attacker) {
+						if (res.data.attacker.hp > 0) {
 							var attackerName = res.data.attacker.username;
 							var defenderName = res.data.defender.username;
 
