@@ -1,6 +1,7 @@
 <nav class="navbar navbar-default navbar-fixed-top">
 	<b>{{getLvl(me)}} {{me.username}}</b> {{me.hp | number: 0}}/{{me.maxHp}}. Gold: {{me.gold | number: 0}}
 	   Str: {{me.stats.str}} Int: {{me.stats.int}} Dex: {{me.stats.dex}}<br>
+		 <button class='btn btn-info'>{{getPointsLeft(me) | number: 0}}</button>
 		 <button ng-click='upgradeStat("str")' class='btn glyphicon glyphicon-plus'>Str</button>
 		 <button ng-click='upgradeStat("int")' class='btn glyphicon glyphicon-plus'>Int</button>
 		 <button ng-click='upgradeStat("dex")' class='btn glyphicon glyphicon-plus'>Dex</button>

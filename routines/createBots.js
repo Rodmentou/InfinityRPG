@@ -1,4 +1,4 @@
-module.exports = function (players) {
+module.exports = function (players, interval) {
 
   var botIndex = 0;
   var createBot = setInterval( function(){
@@ -19,7 +19,7 @@ module.exports = function (players) {
   		botIndex++;
 
   		if (botIndex >= 100) botIndex = 0;
-  }, 6000);
+  }, interval);
 
 
 }

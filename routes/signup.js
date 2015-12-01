@@ -27,13 +27,14 @@ module.exports = function (api, players) {
 		var token = createNewToken(username, jwtSecret);
 
 		if (players[username]) { //PLAYER LOGGED. GIVE IT BACK!
-			var user = players[username];
-			res.json({user: user, token: token});
+			var player = players[username];
+			res.json({user: player, token: token});
 
 		} else { //PLAYER NOT IN MEMORY. CREATE IT AND SEND!
-			var user = createNewPlayer(username);
-			players[username] = user;
-			res.json({user: user, token: token});
+			console.log(data);
+			var player = createNewPlayer(username, data.maxLevel);
+			players[username] = player;
+			res.json({user: player, token: token});
 		}
 
 	};
@@ -43,7 +44,10 @@ module.exports = function (api, players) {
 	};
 
 	var createUser = function (err, req, res) {
-		var userModel = new UserModel(req.body);
+		var newUser = req.body;
+
+		newUser.maxLevel = 0;
+		var userModel = new UserModel(newUser);
 		userModel.save ( function (err, data) {
 			if (!err) {
 				userFound(data, res);
@@ -62,9 +66,10 @@ module.exports = function (api, players) {
 			}
 	};
 
-	var createNewPlayer = function(playerName) {
-		var user = {};
-		user = {
+	var createNewPlayer = function(playerName, bonusStats) {
+		if (!bonusStats) bonusStats = 0;
+		var player = {};
+		player = {
 			username: playerName,
 			maxHp: 200,
 			hp: 200,
@@ -72,12 +77,14 @@ module.exports = function (api, players) {
 			def: 10,
 			atk: 10,
 			gold: 50,
+			isBot: false,
+			lastAttacked: Date.now(),
 
 			stats: {
 				str: 5,
 				int: 5,
 				dex: 5,
-				pointsUsed: 0
+				pointsUsed: 0 - bonusStats
 			},
 
 			equips: {
@@ -93,7 +100,7 @@ module.exports = function (api, players) {
 			history: []
 		};
 
-		return user;
+		return player;
 	};
 
 	var createNewToken = function(playerName, jwtSecret) {

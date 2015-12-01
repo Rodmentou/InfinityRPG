@@ -29,22 +29,13 @@ app.all('*', function(req, res, next) {
 
 var players = {};
 
-
 var api = express.Router();
-require('./routes/signup')(api, players);
-//ONLY AUTHENTICATED USERS BEYOND TFHIS POINT.
-require('./routes/middlewares')(api);
-require('./routes/items')(api, players);
-require('./routes/1x1')(api, players);
-require('./routes/users')(api, players);
-require('./routes/me')(api, players);
-
+require('./routes')(api, players);
 app.use('/api', api);
 
+var routines = require('./routines')(players);
 
-require('./createBots')(players);
-require('./addGold')(players);
-require('./addHp')(players);
+
 
 
 app.listen(app.PORT, function () {

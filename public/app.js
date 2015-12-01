@@ -16,6 +16,14 @@ app.controller('GameController', function ($scope, $http, $cookies, $location) {
 		}
 	};
 
+	$scope.getPointsLeft = function(user) {
+		if (user) {
+			var left = (Math.sqrt(user.exp) + 5 - user.stats.pointsUsed);
+			(left >= 0) ? function(){} : left = 0;
+			return left;
+		}
+	};
+
 	$scope.getBarClass = function (user) {
 		if (user.hp/user.maxHp > 0.6) {
 			return 'progress-bar-info';
@@ -81,7 +89,7 @@ app.controller('GameController', function ($scope, $http, $cookies, $location) {
 		$http.post('/api/me/stats', { stat: stat},
 			{ headers: {'x-access-token': cookieToken } })
 			.then ( function (res) {
-				$scope.me = res.data.player;
+				if (res.data.player) $scope.me = res.data.player;
 			}, function (res) {
 				console.log('Error upgrading stat.');
 			})
@@ -114,7 +122,8 @@ app.controller('GameController', function ($scope, $http, $cookies, $location) {
 
 	$scope.getMe(cookieToken);
 	$scope.getPlayers();
-	var refreshPlayers = setInterval( function(){ $scope.getPlayers(); }, 30000);
+	setInterval( function(){ $scope.getPlayers(); }, 30000);
+
 
 
 });
