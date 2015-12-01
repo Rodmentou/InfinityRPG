@@ -31,8 +31,7 @@ module.exports = function (api, players) {
 			res.json({user: player, token: token});
 
 		} else { //PLAYER NOT IN MEMORY. CREATE IT AND SEND!
-			var bonusStats = Math.round(data.maxLevel/10);
-			var player = createNewPlayer(username, bonusStats);
+			var player = createNewPlayer(data);
 			players[username] = player;
 			res.json({user: player, token: token});
 		}
@@ -66,7 +65,11 @@ module.exports = function (api, players) {
 			}
 	};
 
-	var createNewPlayer = function(playerName, bonusStats) {
+	var createNewPlayer = function(user) {
+		var playerName = user.username;
+		var maxLevel = user.maxLevel;
+		var bonusStats = Math.round(user.maxLevel/10);
+
 		if (!bonusStats) bonusStats = 0;
 		var player = {};
 		player = {
@@ -78,6 +81,7 @@ module.exports = function (api, players) {
 			atk: 10,
 			gold: 50,
 			isBot: false,
+			maxLevel: maxLevel,
 			lastAttacked: Date.now(),
 
 			stats: {
@@ -99,6 +103,8 @@ module.exports = function (api, players) {
 
 			history: []
 		};
+
+		console.log(player);
 
 		return player;
 	};

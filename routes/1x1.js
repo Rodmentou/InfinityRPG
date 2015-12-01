@@ -9,21 +9,13 @@ module.exports = function (api, players) {
 			var defenderName = req.body.username;
 
 			if (attackerName != defenderName) { //Are you the same person?
+				console.log('Attacker: ' + attackerName);
+				console.log('Defender: ' + defenderName);
 				if ( (players[attackerName]) && (players[defenderName]) ) {
 						var attacker = players[attackerName];
 						var defender = players[defenderName];
 
 						var dmg = calculateDmg(attacker, defender);
-
-						var battle = function (dmg, attacker, defender) {
-							//Some calculations using dmg.attacker and dmg.defender.
-						}
-
-						var battle = function (attacker, defender) {
-							//Some calculations using attacker.dmg and defender.dmg.
-							delete attacker.dmg;
-							delete defender.dmg;
-						}
 
 
 						var attackerDmg = dmg.attackerDmg;
@@ -59,6 +51,7 @@ module.exports = function (api, players) {
 								defender.exp += attackerLvl;
 								defender.gold += attacker.gold;
 							}
+							console.log('Pode entrar?');
 							updateMaxLevel(attacker, attackerLvl);
 							delete players[attackerName];
 						};
@@ -76,8 +69,11 @@ module.exports = function (api, players) {
 		});
 
 		var updateMaxLevel = function (player, maxLevel) {
+			console.log('Entrou foi nada');
 			if (!player.isBot) {
+				console.log('Só a cabeçinha');
 				if (player.maxLevel < maxLevel) {
+					console.log('Entrou tudo');
 					var username = player.username;
 					UserModel.update({ username: username},
 													{maxLevel: maxLevel},
