@@ -2,7 +2,7 @@ var mongoose = require('mongoose');
 var UserModel = mongoose.model('UserModel',
   {
     username: { type: String, unique: true},
-    password: String,
+    password: { type: String, select: false},
     maxLevel: Number
   });
 
