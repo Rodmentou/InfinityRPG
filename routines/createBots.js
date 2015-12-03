@@ -13,8 +13,6 @@ module.exports = function (players, interval) {
   	} else {
   		var stats = players[botName].stats;
   		stats.str += 1;
-  		stats.int += 1;
-  		stats.dex += 1;
   	};
   		botIndex++;
 
